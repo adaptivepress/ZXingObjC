@@ -301,10 +301,8 @@ static bool isIPad();
     [self setOutputAttributes];
     [output ZXQT(setAutomaticallyDropsLateVideoFrames:)
                 ZXAV(setAlwaysDiscardsLateVideoFrames:)YES];
-    dispatch_queue_t queue = dispatch_queue_create("captureQueue", NULL);
     [output ZXQT(setDelegate:)ZXAV(setSampleBufferDelegate:)self
-                  ZXAV(queue:queue)];
-    dispatch_release(queue);
+                  ZXAV(queue:dispatch_get_main_queue())];
     [self.session addOutput:output ZXQT(error:nil)];
   }
   return output;
@@ -604,9 +602,7 @@ ZXAV(didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer)
       NSError *error;
       ZXResult *result = [self.reader decode:bitmap hints:hints error:&error];
       if (result) {
-          dispatch_async(dispatch_get_main_queue(), ^(){
-              [delegate captureResult:self result:result];
-          });
+        [delegate captureResult:self result:result];
       }
     }
   }
