@@ -301,10 +301,8 @@ static bool isIPad();
     [self setOutputAttributes];
     [output ZXQT(setAutomaticallyDropsLateVideoFrames:)
                 ZXAV(setAlwaysDiscardsLateVideoFrames:)YES];
-    dispatch_queue_t queue = dispatch_queue_create("captureQueue", NULL);
     [output ZXQT(setDelegate:)ZXAV(setSampleBufferDelegate:)self
-                  ZXAV(queue:queue)];
-    dispatch_release(queue);
+                  ZXAV(queue:dispatch_get_main_queue())];
     [self.session addOutput:output ZXQT(error:nil)];
   }
   return output;
