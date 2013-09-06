@@ -249,6 +249,12 @@ static bool isIPad();
       }
       session.sessionPreset = preset;
     });
+
+    [input.device lockForConfiguration:nil];
+    [input.device setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
+    [input.device setExposurePointOfInterest:CGPointMake(0.5, 0.4)];
+    [input.device unlockForConfiguration];
+
     [session addInput:input ZXQT(error:nil)];
   }
 
